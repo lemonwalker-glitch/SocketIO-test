@@ -3,7 +3,7 @@ from flask_socketio import SocketIO, emit
 
 app = Flask(__name__)
 
-app.config[ 'SECRET_KEY' ] = 'test'
+app.config[ 'SECRET_KEY' ] = 'test' #ignore
 socketio = SocketIO(app)
 
 @app.route('/')
@@ -14,12 +14,12 @@ def index():
 def welcome():
     return render_template('./welcome.html')
 
-@socketio.on('my event')
+@socketio.on('my event') #listener, listens from the html file to send something
 def handle_my_custom_event(json):
     print('received something: ' + str(json))
     socketio.emit('my response', json )
 
-@socketio.on('my redirect')
+@socketio.on('my redirect')# this one listens until in the jquery an emit() is sent to my redirect and then this function sends a emit function back calling the redirect in the html
 def handle_my_custom_event(json):
     print(str(json))
     socketio.emit('redirect', {'url': url_for('welcome')})
